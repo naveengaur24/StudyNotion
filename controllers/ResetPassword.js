@@ -1,6 +1,7 @@
 const User=require("../models/User");
 const mailSender=require("../utils/mailSender");
 const bcrypt=require("bcrypt");
+const crypto=require("crypto");
 
 // reset password token
 exports.resetPasswordToken = async (req, res) => {
@@ -49,7 +50,7 @@ exports.resetPasswordToken = async (req, res) => {
         console.log(err);
         return res.status(500).json({
             success:false,
-            message:"Something went wrong while reset the password";
+            message:"Something went wrong while reset the password",
         })
     }
 }
@@ -59,13 +60,13 @@ exports.resetPasswordToken = async (req, res) => {
 exports.resetPassword = async (req, res) => {
     try{
         // FETCH THE DATA FROM REQ BODY
-        const{password, resetPassword, token}=req.body;
+        const{password, confirmPassword, token}=req.body;
 
         // validation
         if(password!==confirmPassword){
             return res.status(400).json({
                 success:false,
-                message:"Password not matching";
+                message:"Password not matching",
             })
         }
 
@@ -82,7 +83,7 @@ exports.resetPassword = async (req, res) => {
         }
 
         // token time check
-        if(userDetails.resetPasswordExpires>Date.now()){
+        if(userDetails.resetPasswordExpires < Date.now()){
             return res.json({
                 success:false,
 
