@@ -2,6 +2,7 @@ const Course=require('..models/Course');
 const Tag=require('../models/Categories');
 const User=require('../models/User');
 const{uploadImageToCloudinary}= require('../utils/imageUploader');
+const { populate } = require('../models/Profile');
 
 // Create a new course
 
@@ -119,5 +120,60 @@ exports.createCourse=async(req,res)=>{
             success:false,
             message:"Something went wrong while fetching courses",
         });
+    }
+}
+
+
+// get Course Details
+
+exports.getCourseDetails=async(req, res)=>{
+    try{
+        // GET COURSE ID
+        const{courseId}=req.body;
+
+        // find course details
+        const courseDetails=await Course.find(
+            {_id:courseId})
+            .populate(
+                {
+                    path:"instructor",
+                    populate:{
+                        path:"additionalDetails",
+                    }
+                }
+            )
+            .populate("category")
+            .populate("ratingAndReviews")
+            .populate({
+                path:"courseContent",
+                populate:{
+                    path:"subSection",
+                }
+            })
+            .exec();
+
+
+            // VALIDATION
+
+            if(!courseDetails){
+                return res.status(400).json({
+                    success:false,
+                    message:`Could not find the course with ${courseId}`
+                })
+            }
+
+            return res.status(200).json({
+                success:true,
+                message:"Course Details Fetched Successfully..!!",
+                courseDetails,
+            })
+
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            success:false,
+            message:err.message,
+        })
     }
 }

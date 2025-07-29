@@ -57,3 +57,55 @@ exports.showAllCategories=async(req,res)=>{
         });
     }
 }
+
+
+                                // category page Details
+
+exports.categoryPageDetails = async(req, res)=>{
+    try{
+
+        // category id
+        const{CategoryId}=req.body;
+
+
+        //get courses for specifid category
+        const selectedCategory=await Category.findById(CategoryId)
+                                            .populate("courses")
+                                            .exec();
+
+
+        // validation
+        if(!selectedCategory){
+            return res.status(404).json({
+                success:false,
+                message:"data not found"
+            })
+        }
+
+
+        //get courses for diff. category
+        const differentCategories= await Category.find({
+            _id: {$ne : categoryId}    // mujhe aisi category ka data lake do jo is id ke equal nhi hai  --> [$ne means not equal]
+            .populate("courses")
+            .exec();
+
+        });   
+
+
+       //  -->    //get top 10selling courses      [HOME WORK]
+
+        // RETURN RESPONSE
+        return res.status(200).json({
+            success:true,
+            data:{
+                selectedCategory,
+                differentCategories,
+            },
+        })
+
+
+    }
+    catch(err){
+
+    }
+}
