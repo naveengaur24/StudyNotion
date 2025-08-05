@@ -1,0 +1,27 @@
+{
+  "name": "studynotionproject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "commonjs",
+  "description": "",
+  "scripts": {
+    "client": "cd frontend && npm run dev",
+    "server": "cd server && npm run dev",
+    "dev": "concurrently -n \"client,server\" -c \"bgGreen,bgMagenta\" \"npm run client\" \"npm run server\""
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naveengaur24/StudyNotion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/naveengaur24/StudyNotion/issues"
+  },
+  "homepage": "https://github.com/naveengaur24/StudyNotion#readme",
+  "keywords": [],
+  "dependencies": {
+    "concurrently": "^9.2.0",
+    "react-router-dom": "^7.7.1"
+  }
+}

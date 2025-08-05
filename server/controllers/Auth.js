@@ -49,7 +49,7 @@ exports.signup = async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log("❌ User already exists");
+      console.log("User already exists");
       return res.status(400).json({
         success: false,
         message: "User already exists. Please sign in to continue.",
@@ -58,22 +58,44 @@ exports.signup = async (req, res) => {
 
     // Find the most recent OTP for the email
     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-    console.log("🟩 OTP Response from DB:", response);
+    console.log(" OTP Response from DB:", response);
+
+    //  OTP.find({ email })	OTP collection se wo sab OTP entries laao jinka email match karta hai
+    // .sort({ createdAt: -1 })	Un OTPs ko sort karo createdAt ke basis par (naye se purane order mein)
+    // .limit(1)	Sirf sabse naya OTP lo — ek hi OTP chahiye
 
     if (response.length === 0) {
-      console.log("❌ No OTP found");
+      console.log(" No OTP found");
       return res.status(400).json({
         success: false,
         message: "The OTP is not valid",
       });
     }
-    else if (otp !== response[0].otp) {
-      console.log("❌ OTP does not match");
+
+    // otp → jo user ne frontend pe enter kiya
+    // response[0].otp → jo backend ne DB se uthaya
+    else if (otp !== response[0].otp) {   //response ek array banega, jisme sirf ek object hoga (wo OTP document jo DB se mila).
+      console.log(" OTP does not match");
       return res.status(400).json({
         success: false,
         message: "The OTP is not valid",
       });
     }
+
+
+
+                          // 🔽 Signup request with OTP comes in
+                          //     |
+                          //     🔍 Find OTP in DB using email
+                          //     |
+                          //     ❓ OTP mila?
+                          //        ├── ❌ Nahi mila → "OTP is not valid"
+                          //        └── ✅ Mila
+                          //              |
+                          //              ❓ User ka OTP == DB wala OTP?
+                          //                    ├── ❌ Nahi match → "OTP is not valid"
+                          //                    └── ✅ Match → Code aage chalega (password hash, user create)
+
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -104,7 +126,7 @@ exports.signup = async (req, res) => {
       image: "https://api.dicebear.com/6.x/initials/svg?seed=" + firstName + lastName,
     });
 
-    console.log("✅ User created successfully:", user._id);
+    console.log(" User created successfully:", user._id);
 
     return res.status(200).json({
       success: true,
@@ -120,124 +142,6 @@ exports.signup = async (req, res) => {
     });
   }
 };
-
-
-// exports.signup = async (req, res) => {
-//   try {
-//     // Destructure fields from the request body
-//     const {
-//       firstName,
-//       lastName,
-//       email,
-//       password,
-//       confirmPassword,
-//       accountType,
-//       contactNumber,
-//       otp,
-//     } = req.body
-//     // Check if All Details are there or not
-//     if (
-//       !firstName ||
-//       !lastName ||
-//       !email ||
-//       !password ||
-//       !confirmPassword ||
-//       !otp
-//     ) {
-//       return res.status(403).send({
-//         success: false,
-//         message: "All Fields are required",
-//       })
-//     }
-//     // Check if password and confirm password match
-//     if (password !== confirmPassword) {
-//       return res.status(400).json({
-//         success: false,
-//         message:
-//           "Password and Confirm Password do not match. Please try again.",
-//       })
-//     }
-
-//     // Check if user already exists
-//     const existingUser = await User.findOne({ email })
-//     if (existingUser) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "User already exists. Please sign in to continue.",
-//       })
-//     }
-
-//     // Find the most recent OTP for the email
-//     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1)
-//     console.log(response)
-//     if (response.length === 0) {
-//       // OTP not found for the email
-//       return res.status(400).json({
-//         success: false,
-//         message: "The OTP is not valid",
-//       })
-//     } else if (otp !== response[0].otp) {
-//       // Invalid OTP
-//       return res.status(400).json({
-//         success: false,
-//         message: "The OTP is not valid",
-//       })
-//     }
-
-//     // Hash the password
-//     const hashedPassword = await bcrypt.hash(password, 10)
-
-//     // Create the user
-//     let approved = ""
-//     approved === "Instructor" ? (approved = false) : (approved = true)
-
-//     // Create the Additional Profile For User
-//     const profileDetails = await Profile.create({
-//       gender: null,
-//       dateOfBirth: null,
-//       about: null,
-//       contactNumber: null,
-//     })
-//     const user = await User.create({
-//       firstName,
-//       lastName,
-//       email,
-//       contactNumber,
-//       password: hashedPassword,
-//       accountType: accountType,
-//       approved: approved,
-//       additionalDetails: profileDetails._id,
-//       image: "",
-//     })
-
-//     return res.status(200).json({
-//       success: true,
-//       user,
-//       message: "User registered successfully",
-//     })
-//   }
-//   catch (error) {
-//     console.error(error)
-//     return res.status(500).json({
-//       success: false,
-//       message: "User cannot be registered. Please try again.",
-//     })
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -339,11 +243,14 @@ exports.sendotp = async (req, res) => {
     console.log("Result is Generate OTP Func")
     console.log("OTP", otp)
     console.log("Result", result)
+
+    //Dekhne ke liye ki OTP kya bana, aur kya DB me already exist karta hai ya nahi
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
       })
     }
+    
     const otpPayload = { email, otp }
     const otpBody = await OTP.create(otpPayload)
     console.log("OTP Body", otpBody)

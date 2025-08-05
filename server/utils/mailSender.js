@@ -11,7 +11,7 @@ const mailSender= async(email, title, body)=>{
         })
 
         let info=await transporter.sendMail({
-            from:"StudyNotion || Naveen gaur- CodeHelp",
+            from:"StudyNotion || NAVEEN GAUR ",
             to:`${email}`,
             subject:`${title}`,
             html: `${body}`,
@@ -23,3 +23,6 @@ const mailSender= async(email, title, body)=>{
         console.log(err.message);
     }
 }
+
+
+//yeh backend se OTP, signup confirmation, notifications bhejne ke liye hota hai.
