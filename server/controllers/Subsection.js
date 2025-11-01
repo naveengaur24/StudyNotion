@@ -1,9 +1,8 @@
-// Import necessary modules
-const Section = require("../models/Section")
-const SubSection = require("../models/SubSection")
-const { uploadImageToCloudinary } = require("../utils/imageUploader")
+const SubSection=require("../models/SubSection");
+const Section=require("../models/Section");
+const {uploadImageToCloudinary}=require("../utils/imageUploader");
 
-// Create a new sub-section for a given section
+//create SubSection
 exports.createSubSection = async (req, res) => {
   try {
     // Extract necessary information from the request body
@@ -52,9 +51,11 @@ exports.createSubSection = async (req, res) => {
   }
 }
 
+//HW:Update Subsection and remove subsection 
+  
 exports.updateSubSection = async (req, res) => {
   try {
-    const { sectionId, subSectionId, title, description } = req.body
+    const { subSectionId,sectionId, title, description } = req.body
     const subSection = await SubSection.findById(subSectionId)
 
     if (!subSection) {
@@ -83,17 +84,11 @@ exports.updateSubSection = async (req, res) => {
 
     await subSection.save()
 
-    // find updated section and return it
-    const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
-    )
-
-    console.log("updated section", updatedSection)
-
+    const updatedSection = await Section.findById(sectionId).populate("subSection");
     return res.json({
       success: true,
       message: "Section updated successfully",
-      data: updatedSection,
+      data:updatedSection
     })
   } catch (error) {
     console.error(error)
@@ -123,15 +118,12 @@ exports.deleteSubSection = async (req, res) => {
         .json({ success: false, message: "SubSection not found" })
     }
 
-    // find updated section and return it
-    const updatedSection = await Section.findById(sectionId).populate(
-      "subSection"
-    )
+    const updatedSection = await Section.findById(sectionId).populate("subSection");
 
     return res.json({
       success: true,
       message: "SubSection deleted successfully",
-      data: updatedSection,
+      data:updatedSection  
     })
   } catch (error) {
     console.error(error)
@@ -141,4 +133,3 @@ exports.deleteSubSection = async (req, res) => {
     })
   }
 }
-

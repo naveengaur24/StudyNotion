@@ -9,7 +9,6 @@ const {
   sendotp,
   changePassword,
 } = require("../controllers/Auth")
-
 const {
   resetPasswordToken,
   resetPassword,
@@ -25,10 +24,6 @@ const { auth } = require("../middlewares/auth")
 
 // Route for user login
 router.post("/login", login)
-
-console.log("TYPE of resetPasswordToken:", typeof resetPasswordToken);
-
-
 
 // Route for user signup
 router.post("/signup", signup)

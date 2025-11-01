@@ -1,17 +1,16 @@
-const mongoose =require("mongoose");
+//require statements
 require("dotenv").config();
+const mongoose=require('mongoose');
 
-exports.connect= ()=>{
-    mongoose.connect(process.env.MONGODB_URL,{
-        useNewUrlParser:true,
-        useUnifiedTopology:true,
-    })
-    .then(()=>{
-        console.log("Database Connection Suscessfull..!!");
-    })
-    .catch((err)=>{
-        console.log("Database Connection Failed..!!", err);
-        console.log(err);
-        process.exit(1); // Exit process with failure
-    })
+
+exports.connect=()=>{
+  mongoose.connect(process.env.MONGODB_URL,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true
+  }).then(()=>{console.log("DB CONNECTION SUCCESSFUL")})
+  .catch((err)=>{
+    console.log("DB CONNECTION ISSUES");
+    console.error(err);
+    process.exit(1);
+  })
 }

@@ -1,4 +1,4 @@
- const BASE_URL = "https://localhost:4000/api/v1"
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 // AUTH ENDPOINTS
 export const endpoints = {
@@ -13,13 +13,14 @@ export const endpoints = {
 export const profileEndpoints = {
   GET_USER_DETAILS_API: BASE_URL + "/profile/getUserDetails",
   GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourses",
-  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructorDashboard",
+  GET_INSTRUCTOR_DATA_API:BASE_URL+ "/profile/instructorDashboard",
+
 }
 
 // STUDENTS ENDPOINTS
 export const studentEndpoints = {
   COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
-  COURSE_VERIFY_API: BASE_URL + "/payment/verifyPayment",
+  COURSE_VERIFY_API: BASE_URL + "/payment/verifySignature",
   SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
 }
 
@@ -43,7 +44,6 @@ export const courseEndpoints = {
   LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
   CREATE_RATING_API: BASE_URL + "/course/createRating",
 }
-
 
 // RATINGS AND REVIEWS
 export const ratingsEndpoints = {
@@ -70,4 +70,5 @@ export const settingsEndpoints = {
   UPDATE_PROFILE_API: BASE_URL + "/profile/updateProfile",
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
+ 
 }

@@ -1,11 +1,9 @@
-import React from 'react'
-
-export const Error = () => {
-  return (
-    <div className='flex justify-center items-center text-3xl text-red'>
-        Error - 404 | Page Not Found
+const Error=()=>{
+  return(
+    <div className="flex text-white text-3xl justify-center items-center">
+      Error - 404 Not found
     </div>
-  )
+  );
 }
 
-export default Error
+export default Error;

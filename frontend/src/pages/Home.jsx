@@ -1,25 +1,24 @@
-import React from 'react'
-import {FaArrowRight} from "react-icons/fa"
-import {Link} from "react-router-dom"
-import HighlightText from '../components/core/HomePage/HighlightText'
-import CTAButton from '../components/core/HomePage/Button' 
-import Banner from '../assets/Images/banner.mp4'
-import CodeBlocks from '../components/core/HomePage/CodeBlocks'
-import TimelineSection from '../components/core/HomePage/TimelineSection'
-import LearningLanguageSection from '../components/core/HomePage/LearningLanguageSection'
-import InstructorSection from '../components/core/HomePage/InstructorSection'
-import Footer from '../components/common/Footer'
-import ExploreMore from '../components/core/HomePage/ExploreMore'
+// Icons Import
+import { FaArrowRight } from "react-icons/fa"
+import { Link } from "react-router-dom"
 
+// Image and Video Import
+import Banner from "../assets/Images/banner.mp4"
+// Component Imports
+import Footer from "../components/common/Footer"
+import ReviewSlider from "../components/common/ReviewSlider"
+import CTAButton from "../components/core/HomePage/Button"
+import CodeBlocks from "../components/core/HomePage/CodeBlocks"
+import ExploreMore from "../components/core/HomePage/ExploreMore"
+import HighlightText from "../components/core/HomePage/HighlightText"
+import InstructorSection from "../components/core/HomePage/InstructorSection"
+import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection"
+import TimelineSection from "../components/core/HomePage/Timeline"
 
-
-
-
- const Home = () => {
+function Home() {
   return (
     <div>
-
-        {/* Section 1 */}
+      {/* Section 1 */}
       <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 text-white">
         {/* Become a Instructor Button */}
         <Link to={"/signup"}>
@@ -67,7 +66,7 @@ import ExploreMore from '../components/core/HomePage/ExploreMore'
           </video>
         </div>
 
-        {/* Code Section 1  */}
+        {/* Code Section 1 */}
         <div>
           <CodeBlocks
             position={"lg:flex-row"}
@@ -124,13 +123,14 @@ import ExploreMore from '../components/core/HomePage/ExploreMore'
             codeblock={`import React from "react";\n import CTAButton from "./Button";\nimport TypeAnimation from "react-type";\nimport { FaArrowRight } from "react-icons/fa";\n\nconst Home = () => {\nreturn (\n<div>Home</div>\n)\n}\nexport default Home;`}
             backgroundGradient={<div className="codeblock2 absolute"></div>}
           />
-        </div> 
-            <ExploreMore/>
+        </div>
+
+        {/* Explore Section */}
+        <ExploreMore />
       </div>
 
-
-       {/* Section 2 */}
-       <div className='bg-pure-greys-5 text-richblack-700'>
+      {/* Section 2 */}
+      <div className="bg-pure-greys-5 text-richblack-700">
         <div className="homepage_bg h-[320px]">
           {/* Explore Full Catagory Section */}
           <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8">
@@ -149,7 +149,7 @@ import ExploreMore from '../components/core/HomePage/ExploreMore'
           </div>
         </div>
 
-          <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 ">
+        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 ">
           {/* Job that is in Demand - Section 1 */}
           <div className="mb-10 mt-[-100px] flex flex-col justify-between gap-7 lg:mt-20 lg:flex-row lg:gap-0">
             <div className="text-4xl font-semibold lg:w-[45%] ">
@@ -174,10 +174,9 @@ import ExploreMore from '../components/core/HomePage/ExploreMore'
           {/* Learning Language Section - Section 3 */}
           <LearningLanguageSection />
         </div>
-        
-    </div>
+      </div>
 
-     {/* Section 3 */}
+      {/* Section 3 */}
       <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
         {/* Become a instructor section */}
         <InstructorSection />
@@ -186,16 +185,13 @@ import ExploreMore from '../components/core/HomePage/ExploreMore'
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
 
-       {/* Footer */}
+      {/* Footer */}
       <Footer />
-
-
-      
-        
     </div>
   )
 }
-export default Home;
+
+export default Home

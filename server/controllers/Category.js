@@ -50,17 +50,17 @@ exports.showAllCategories = async (req, res) => {
 exports.categoryPageDetails = async (req, res) => {
     try {
       const { categoryId } = req.body
-      console.log("PRINTING CATEGORY ID: ", categoryId);
+      console.log("PRINTING CATEGORY ID:"+categoryId);
+			
       // Get courses for the specified category
-      const selectedCategory = await Category.findById(categoryId)
-        .populate({
+      const selectedCategory = await Category.findById(categoryId).populate({
           path: "courses",
           match: { status: "Published" },
           populate: "ratingAndReviews",
-        })
-        .exec()
-  
-      //console.log("SELECTED COURSE", selectedCategory)
+        }).exec()
+				console.log("Selected Category:" ,selectedCategory );
+				console.log("Selected Category Negation:",!selectedCategory);
+				
       // Handle the case when the category is not found
       if (!selectedCategory) {
         console.log("Category not found.")
