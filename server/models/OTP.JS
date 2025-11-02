@@ -19,6 +19,7 @@ const otpSchema=new mongoose.Schema({
 });
 
 
+
 //Pre save middleware
 //to send emails
 async function sendVerificationEmail(email,otp){
