@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { BiInfoCircle } from "react-icons/bi"
 import { HiOutlineGlobeAlt } from "react-icons/hi"
-import {defaultUrlTransform} from "react-markdown"
+// import {defaultUrlTransform} from "react-markdown"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -15,6 +15,8 @@ import { fetchCourseDetails } from "../services/operations/courseDetailsAPI"
 import {buyCourse } from "../services/operations/studentFeaturesAPI"
 import GetAvgRating from "../utils/avgRating"
 import Error from "./Error"
+import ReactMarkdown from "react-markdown"
+
 
 function CourseDetails() {
   const { user } = useSelector((state) => state.profile)
@@ -62,7 +64,7 @@ function CourseDetails() {
     setIsActive(
       !isActive.includes(id)
         ? isActive.concat([id])
-        : isActive.filter((e) => e != id)
+        : isActive.filter((e) => e !== id)
     )
   }
 
@@ -194,11 +196,13 @@ function CourseDetails() {
         <div className="mx-auto max-w-maxContentTab lg:mx-0 xl:max-w-[810px]">
           {/* What will you learn section */}
           <div className="my-8 border border-richblack-600 p-8">
-            <p className="text-3xl font-semibold">What you'll learn</p>
-            <div className="mt-5">
-              <defaultUrlTransform>{whatYouWillLearn}</defaultUrlTransform>
-            </div>
+          <p className="text-3xl font-semibold">What you'll learn</p>
+          <div className="mt-5">
+            <ReactMarkdown className="text-richblack-200 whitespace-pre-line">
+              {whatYouWillLearn}
+            </ReactMarkdown>
           </div>
+        </div>
 
           {/* Course Content Section */}
           <div className="max-w-[830px] ">
