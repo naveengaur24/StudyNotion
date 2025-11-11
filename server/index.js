@@ -145,7 +145,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://study-notion-q88f.vercel.app",
+      // "https://study-notion-q88f.vercel.app",
       "https://study-notion-q88f-git-master-naveen-gaurs-projects-49bc06ba.vercel.app"
     ],
     credentials: true,
